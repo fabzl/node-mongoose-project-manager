@@ -1,5 +1,6 @@
 var Project = require('../models/Project');
 
+/* CREATE */
 // GET /project/new
 exports.create = function(req, res) {
   if (req.session.loggedIn === true) {
@@ -7,6 +8,9 @@ exports.create = function(req, res) {
       title: 'Create project',
       userId: req.session.user._id,
       userName: req.session.user.name,
+      projectId: "",
+      projectName: "",
+      tasks: "",
       buttonText: 'Go!'
     });
   } else {
@@ -33,6 +37,7 @@ exports.doCreate = function(req, res) {
   });
 };
 
+/* READ */
 // GET /project/byuser/:userId
 exports.byUser = function(req, res) {
   console.log("Getting user projects");
@@ -81,4 +86,53 @@ exports.displayInfo = function(req, res) {
       res.redirect('/user');
     }
   }
-}
+};
+
+/* UPDATE */
+// GET /project/edit/:id
+exports.edit = function(req, res) {
+  if (req.session.loggedIn !== true) {
+    res.redirect('/login');
+  } else {
+    if (req.params.id) {
+      Project.model.findById(req.params.id, function(err, project) {
+        res.render('project/form', {
+          title: 'Edit project',
+          userId: req.session.user._id,
+          userName: req.session.user.name,
+          projectId: req.params.id,
+          projectName: project.projectName,
+          tasks: project.tasks,
+          buttonText: 'Make the change'
+        });
+      });
+    } else {
+      res.redirect('/user');
+    }
+  }
+};
+
+// POST /project/edit/:id
+exports.doEdit = function(req, res) {
+  if (req.session.loggedIn !== true) {
+    res.redirect('/login');
+  } else {
+    if (req.body.projectId) {
+      Project.model.findById(req.body.projectId, function(err, project) {
+        if (!err) {
+          project.projectName = req.body.projectName;
+          project.tasks = req.body.tasks;
+          project.modifiedOn = Date.now();
+          project.save(function(err, project) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log('Project updated: ' + req.body.projectName);
+              res.redirect('/project/' + req.body.projectId);
+            }
+          });
+        }
+      });
+    }
+  }
+};

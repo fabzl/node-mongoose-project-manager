@@ -4,11 +4,12 @@ block content
   h1= title
   form(id="frmUserProfile", method="post", action="")
     label(for="FullName") Full Name
-    input(type="text", name="FullName", id="FullName")
+    input(type="text", name="FullName", id="FullName", value="#{name}")
     label(for="Email") Email
-    input(type="email", name="Email", id="Email")
-    label(for="Password") Password
-    input(type="password", name="Password", id="Password")
-    label(for="ConfirmPassword") Confirm Password
-    input(type="password", name="ConfirmPassword", id="ConfirmPassword")
+    input(type="email", name="Email", id="Email", value="#{email}")
+    if buttonText == "Join!"
+      label(for="Password") Password
+      input(type="password", name="Password", id="Password")
+      label(for="ConfirmPassword") Confirm Password
+      input(type="password", name="ConfirmPassword", id="ConfirmPassword")
     input(type="submit", value="#{buttonText}")

@@ -39,21 +39,21 @@ app.get('/', routes.index);
 app.get('/user', user.index);         // current user profile
 app.get('/user/new', user.create);    // create new user form
 app.post('/user/new', user.doCreate); // create new user action
-//app.get('/user/edit', user.edit);     // edit current user form
-//app.post('/user/edit', user.doEdit);  // edit current user action
+app.get('/user/edit', user.edit);     // edit current user form
+app.post('/user/edit', user.doEdit);  // edit current user action
 //app.get('/user/delete', user.confirmDelete); // delete form
 //app.post('/user/delete', user.doDelete);     // delete action
 app.get('/login', user.login);
 app.post('/login', user.doLogin);
-//app.get('/logout', user.doLogout);
+app.get('/logout', user.doLogout);
 
 // Project routes
 app.get('/project/new', project.create);
 app.post('/project/new', project.doCreate);
 app.get('/project/:id', project.displayInfo);
 app.get('/project/byuser/:userId', project.byUser);
-//app.get('/project/edit/:id', project.edit);
-//app.post('/project/edit/:id', project.doEdit);
+app.get('/project/edit/:id', project.edit);
+app.post('/project/edit/:id', project.doEdit);
 //app.get('/project/delete/:id', project.confirmDelete);
 //app.post('/project/delete/:id', project.doDelete);
 

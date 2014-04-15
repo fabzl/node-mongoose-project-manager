@@ -1,12 +1,17 @@
 var User = require('../models/User');
 
+/* CREATE */
+// GET /user/new
 exports.create = function(req, res) {
   res.render('user/form', {
     title: 'Create User',
+    name: "",
+    email: "",
     buttonText: "Join!"
   });
 };
 
+// POST /user/new
 exports.doCreate = function(req, res) {
   if (req.body.Password === req.body.ConfirmPassword) {
     password = User.generateHash(req.body.Password);  
@@ -41,6 +46,8 @@ exports.doCreate = function(req, res) {
   }
 }
 
+/* READ */
+// GET /user
 exports.index = function(req, res) {
   if (req.session.loggedIn === true) {
     res.render('user/profile', {
@@ -80,7 +87,13 @@ exports.doLogin = function(req, res) {
             };
             req.session.loggedIn = true;
             console.log('Logged in user: ' + user);
-            res.redirect('/user');
+            User.model.update(
+              { _id: user._id },
+              { $set: {lastLogin: Date.now()} },
+              function() {
+                res.redirect('/user');
+              }
+            );
           }
         } else {
           res.redirect('/login?404=error');
@@ -91,3 +104,57 @@ exports.doLogin = function(req, res) {
     res.redirect('/login?404=error');
   }
 };
+
+/* UPDATE */
+// GET /user/edit
+exports.edit = function(req, res) {
+  if (req.session.loggedIn !== true) {
+    res.redirect('/login');
+  } else {
+    res.render('user/form', {
+      title: 'Edit profile',
+      _id: req.session._id,
+      name: req.session.user.name,
+      email: req.session.user.email,
+      buttonText: "Save"
+    });
+  }
+};
+
+// POST /user/edit
+exports.doEdit = function(req, res) {
+  if (req.session.user._id) {
+    User.model.findById(
+      req.session.user._id,
+      function(err, user) {
+        if (err) {
+          console.log(err);
+          res.redirect('/user?error=finding');
+        } else {
+          user.name = req.body.FullName;
+          user.email = req.body.Email;
+          user.modifiedOn = Date.now();
+          user.save(function(err) {
+            if (!err) {
+              console.log('User updated: ' + req.body.FullName);
+              req.session.user.name = req.body.FullName;
+              req.session.user.email = req.body.Email;
+              res.redirect('/user');
+            }
+          });
+        }
+      }
+    );
+  }
+};
+
+// GET /logout
+exports.doLogout = function(req, res) {
+  if (req.session.loggedIn !== true) {
+    res.redirect('/login');
+  } else {
+    console.log("Logout request");
+    req.session.destroy();
+    res.redirect('/');
+  }
+}
