@@ -41,8 +41,8 @@ app.get('/user/new', user.create);    // create new user form
 app.post('/user/new', user.doCreate); // create new user action
 app.get('/user/edit', user.edit);     // edit current user form
 app.post('/user/edit', user.doEdit);  // edit current user action
-//app.get('/user/delete', user.confirmDelete); // delete form
-//app.post('/user/delete', user.doDelete);     // delete action
+app.get('/user/delete', user.confirmDelete); // delete form
+app.post('/user/delete', user.doDelete);     // delete action
 app.get('/login', user.login);
 app.post('/login', user.doLogin);
 app.get('/logout', user.doLogout);
@@ -54,8 +54,8 @@ app.get('/project/:id', project.displayInfo);
 app.get('/project/byuser/:userId', project.byUser);
 app.get('/project/edit/:id', project.edit);
 app.post('/project/edit/:id', project.doEdit);
-//app.get('/project/delete/:id', project.confirmDelete);
-//app.post('/project/delete/:id', project.doDelete);
+app.get('/project/delete/:id', project.confirmDelete);
+app.post('/project/delete/:id', project.doDelete);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

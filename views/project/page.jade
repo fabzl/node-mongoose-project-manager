@@ -3,9 +3,10 @@ extends ../layout
 block content
   h1 Mongoose Project Management
   h2= projectName
-  p Created by: #{createdBy}
+  p Created by: #{createdByName}
   p Tasks: #{tasks.replace(/\n/g, '<br />')}
 
   ul
     li: a(href="/project/edit/#{projectId}") Edit project info
+    li: a(href="/project/delete/#{projectId}") Delete project
     li: a(href="/user") My profile

@@ -5,6 +5,7 @@ var projectSchema = new db.Schema({
   createdOn: { type: Date, default: Date.now },
   modifiedOn: Date,
   createdBy: String,
+  createdByName: String,
   tasks: String
 });
 

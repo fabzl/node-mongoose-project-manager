@@ -5,6 +5,7 @@ block content
   form(id="frmProject", method="post", action="")
     p Project owner: #{userName}
     input(type="hidden", name="userId", id="userId", value="#{userId}")
+    input(type="hidden", name="userName", id="userName", value="#{userName}")
     input(type="hidden", name="projectId", id="projectId", value="#{projectId}")
     label(for="projectName") Project name
     input(type="text", name="projectName", id="projectName", value="#{projectName}")

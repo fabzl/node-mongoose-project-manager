@@ -23,6 +23,7 @@ exports.doCreate = function(req, res) {
   Project.model.create({
     projectName: req.body.projectName,
     createdBy: req.body.userId,
+    createdByName: req.body.userName,
     createdOn: Date.now(),
     tasks: req.body.tasks
   }, function(err, project) {
@@ -77,7 +78,7 @@ exports.displayInfo = function(req, res) {
             title: project.projectName,
             projectName: project.projectName,
             tasks: project.tasks,
-            createdBy: project.createdBy,
+            createdByName: project.createdByName,
             projectId: req.params.id
           });
         }
@@ -136,3 +137,46 @@ exports.doEdit = function(req, res) {
     }
   }
 };
+
+/* DELETE */
+// GET /project/delete/:id
+exports.confirmDelete = function(req, res) {
+  if (req.session.loggedIn !== true) {
+    res.redirect('/login');
+  } else {
+    if (req.params.id) {
+      Project.model.findById(req.params.id, function(err, project) {
+        if (err) {
+          console.log(err);
+          res.redirect('/project/' + req.params.id);
+        } else {
+          res.render('project/delete', {
+            title: "Delete " + project.projectName + "?",
+            projectName: project.projectName,
+            projectId: req.params.id,
+            userId: req.session.user._id
+          });
+        }
+      });
+    } else {
+      res.render('/user');
+    }
+  }
+};
+
+// POST /project/delete/:id
+exports.doDelete = function(req, res) {
+  if (req.body.projectId) {
+    Project.model.findByIdAndRemove(
+      req.body.projectId,
+      function(err, project) {
+        if (err) {
+          console.log(err);
+          return res.render('/project/' + req.body.projectId + '?error=deletion');
+        }
+        console.log("project id " + project._id + " deleted");
+        res.redirect('/user?confirm=project-deleted');
+      }
+    );
+  }
+}

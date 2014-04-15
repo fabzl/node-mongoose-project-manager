@@ -1,0 +1,9 @@
+extends ../layout
+
+block content
+  h1= title
+  p Are you sure you want to permanently delete the project #{projectName}?
+  form(id="formProjectDelete", method="post", action="")
+    input(type="hidden", name="projectId", id="projectId", value="#{projectId}")
+    input(type="hidden", name="userId", id="userId", value="#{userId}")
+    input(type="submit", value="Yes, get it out of my life!")

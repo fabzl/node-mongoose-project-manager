@@ -1,4 +1,5 @@
 var User = require('../models/User');
+var Project = require('../models/Project');
 
 /* CREATE */
 // GET /user/new
@@ -148,6 +149,43 @@ exports.doEdit = function(req, res) {
   }
 };
 
+/* DELETE */
+// GET /user/delete
+exports.confirmDelete = function(req, res) {
+  res.render('user/delete', {
+    title: 'Delete account',
+    _id: req.session.user._id,
+    name: req.session.user.name,
+    email: req.session.user.email
+  });
+};
+
+// POST /user/delete
+exports.doDelete = function(req, res) {
+  if (req.body._id) {
+    User.model.findByIdAndRemove(
+      req.body._id,
+      function(err, user) {
+        if (err) {
+          console.log(err);
+          return res.redirect('/user?error=deleting');
+        }
+        console.log("User deleted:", user);
+        Project.model.remove({ createdBy: req.body._id }, function(err) {
+          if (!err) {
+            console.log("All projects created by " + req.body._id + " have been deleted.")
+          } else {
+            console.log(err);
+          }
+        });
+        clearSession(req.session, function() {
+          res.redirect('/');
+        });
+      }
+    );
+  }
+};
+
 // GET /logout
 exports.doLogout = function(req, res) {
   if (req.session.loggedIn !== true) {
@@ -158,3 +196,9 @@ exports.doLogout = function(req, res) {
     res.redirect('/');
   }
 }
+
+// Helpers
+var clearSession = function(session, callback) {
+  session.destroy();
+  callback();
+};
