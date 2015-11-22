@@ -7,6 +7,7 @@ var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
 var project = require('./routes/project');
+var people = require('./routes/people');
 var http = require('http');
 var path = require('path');
 
@@ -32,6 +33,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
+app.use(require('connect-livereload')({port: 35729}));
+  // app.use(express.static(__dirname));
+ // app.listen(3000, '127.0.0.1');
+
 
 app.get('/', routes.index);
 
@@ -56,6 +61,11 @@ app.get('/project/edit/:id', project.edit);
 app.post('/project/edit/:id', project.doEdit);
 app.get('/project/delete/:id', project.confirmDelete);
 app.post('/project/delete/:id', project.doDelete);
+
+// People routes
+app.get('/people', people.team);
+
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

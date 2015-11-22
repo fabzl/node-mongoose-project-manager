@@ -11,9 +11,9 @@ var userSchema = new db.Schema({
 });
 
 module.exports = {
-  
+
   model: db.mongoose.model('User', userSchema),
-  
+
   generateHash: function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
   },
@@ -21,5 +21,9 @@ module.exports = {
   validPassword: function(formPassword, dbPassword) {
     return bcrypt.compareSync(formPassword, dbPassword);
   }
+
+  // getUsers: function () { 
+  //   return db.getCollection('users').find({});
+  // }
 
 }

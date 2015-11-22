@@ -89,6 +89,8 @@ exports.displayInfo = function(req, res) {
   }
 };
 
+
+
 /* UPDATE */
 // GET /project/edit/:id
 exports.edit = function(req, res) {
