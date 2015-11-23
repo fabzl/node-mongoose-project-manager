@@ -12,10 +12,13 @@ var userSchema = new db.Schema({
 
 module.exports = {
 
-  model: db.mongoose.model('People', userSchema),
+ // model: db.mongoose.model('User', userSchema),
 
-  getUsers: function () { 
-   // return model.getCollection('users').find({});
-  }
-
+  // getUsers: function () { 
+  //  // return model.getCollection('users').find({});
+  //  this.model.find({})
+  //            .exec(function(err, data){
+  //               console.log("datattatta",data);
+  //             });
+  //  }
 }

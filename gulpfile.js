@@ -4,9 +4,11 @@ var gulp = require('gulp')
  , minifycss = require('gulp-minify-css')
  , rename = require('gulp-rename')
  , nodemon = require('gulp-nodemon')
- , runSequence = require('run-sequence');
+ , runSequence = require('run-sequence')
+ , browserSync = require('browser-sync').create();
 
-gulp.task('default',['styles','start','express','livereload','watch'], function() {
+
+gulp.task('default',['styles','start','watch','browser-sync'], function() {
   // place code for your default task here
   //  runSequence('styles', 'start','livereload');
 });
@@ -30,33 +32,32 @@ gulp.task('styles', function() {
 
 // to watch the files
 gulp.task('watch', function() {
-  gulp.watch('sass/*.scss', ['styles']);
-  gulp.watch('*.html', notifyLiveReload);
-  gulp.watch('css/*.css', notifyLiveReload);
+  
+    gulp.watch('public/stylesheets/sass/*.scss', ['styles']);
+  // gulp.watch('*.html', notifyLiveReload);
+   // gulp.watch("public/**/*.*", browserSync.reload);
+//  gulp.watch('*.html', browserSync.reload);
+//  gulp.watch('css/*.css', browserSync.reload);
+  // gulp.watch("app/scss/*.scss", ['sass']);
+   gulp.watch("public/**/*.*").on('change', browserSync.reload);
+
 });
 
-// live reload
-gulp.task('express', function() {
-  // var express = require('express');
-  // var app = express();
-  app.use(require('connect-livereload')({port: 35729}));
-  app.use(express.static(__dirname));
-  app.listen(3000, '127.0.0.1');
+
+// Static server
+// gulp.task('browser-sync', function() {
+//     browserSync.init({
+//         proxy: '127.0.0.1:3000'
+//     });
+// });
+
+// or...
+
+gulp.task('browser-sync', function() {
+    browserSync.init({
+        proxy: "localhost:3000",
+        files: ["public/**/*.*"],
+        port: 8000
+    });
 });
-
-var tinylr;
-gulp.task('livereload', function() {
-  tinylr = require('tiny-lr')();
-    tinylr.listen(35729);
-});
-
-function notifyLiveReload(event) {
-  var fileName = require('path').relative(__dirname, event.path);
-
-  tinylr.changed({
-    body: {
-      files: [fileName]
-    }
-  });
-}
 

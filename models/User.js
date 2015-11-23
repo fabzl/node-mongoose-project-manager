@@ -20,10 +20,13 @@ module.exports = {
 
   validPassword: function(formPassword, dbPassword) {
     return bcrypt.compareSync(formPassword, dbPassword);
-  }
+  },
 
-  // getUsers: function () { 
-  //   return db.getCollection('users').find({});
-  // }
-
+  getUsers: function () { 
+   // return model.getCollection('users').find({});
+   this.model.find({})
+             .exec(function(err, data){
+                console.log("datattatta",data);
+              });
+   }
 }

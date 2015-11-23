@@ -1,9 +1,9 @@
-var People = require('../models/People');
+var Users = require('../models/User');
 
 
 exports.team = function(req, res){
 
-	users = People.getUsers(req.body.Name);  
+	users = Users.getUsers(req.body.Name);  
   //res.render('people', { title: 'People Page' });
  	console.log("team :",users);
 };

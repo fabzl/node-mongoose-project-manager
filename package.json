@@ -13,6 +13,7 @@
     "bcrypt-nodejs": "0.0.3"
   },
   "devDependencies": {
+    "browser-sync": "^2.10.0",
     "connect-livereload": "^0.5.3",
     "convert-source-map": "^1.1.2",
     "dargs": "^4.0.1",

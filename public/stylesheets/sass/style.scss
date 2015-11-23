@@ -37,8 +37,6 @@ $color-link-hover             : darken($color-primary-1, 20%);
 $color-link-active            : darken($color-primary-1, 20%);
 
 
-
-
 body {
 
   padding: 0;
@@ -46,7 +44,7 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   list-style-type:none;
   text-align:center;
-  background-color:$color-primary-0;
+  background-color:$color-primary-2;
   color: $color-primary-4;
 }
 
